@@ -15,15 +15,15 @@ Register as a customer on One Hour Translation Sandbox
 Request your snadbox API Keys
 Almost each method of OhtApi class return namedtuple (with type oht_response) with such structure:
 
-status:
+**status:**
 
-code - request status code
+*code* - request status code
 
-msg - request status message, "ok" for OK
+*msg* - request status message, "ok" for OK
 
-results - fields list depend on kind of query
+**results** - fields list depend on kind of query
 
-errors - list of errors
+**errors** - list of errors
 
 For more details see doc comments for each method.
 
