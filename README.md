@@ -3,13 +3,15 @@ One Hour Translation™ provides translation, proofreading and transcription ser
 
 [More at website](https://www.onehourtranslation.com/translation/about-us>)
 
-Starters' Guide
+#### Dependencies
+C# Framework 4.0 >
+
+## Starters' Guide ##
 ---------------
 First of all, you must to obtain private and public keys:
 #### Authentication 
 Register as a customer on [One Hour Translation](http://www.onehourtranslation.com/auth/register).
 Request your API Keys [here](http://www.onehourtranslation.com/profile/apiKeys).
-
 
 #### Configuration ####
 The API Library must be configured before calling any API method:
@@ -18,8 +20,8 @@ The API Library must be configured before calling any API method:
 
 #### Running Methods ####
 
- var r = _api.GetResource(textResources.Text);
- textFileName.Text = r.Result.FileName;
+ var r = _api.GetResource(<resource_uuid>);
+ var file = r.Result.FileName;
 
 Almost each method of OhtApi class return namedtuple (with type oht_response) with such structure:
 
