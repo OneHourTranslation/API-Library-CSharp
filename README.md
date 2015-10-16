@@ -20,7 +20,7 @@ The API Library must be configured before calling any API method:
 
 #### Running Methods ####
 
-  *var r = _api.GetResource(<resource_uuid>);*
+  *var r = _api.GetResource(resource_uuid);*
   *var file = r.Result.FileName;*
 
 Almost each method of OhtApi class return with such structure:
