@@ -20,8 +20,8 @@ The API Library must be configured before calling any API method:
 
 #### Running Methods ####
 
- var r = _api.GetResource(<resource_uuid>);
- var file = r.Result.FileName;
+  *var r = _api.GetResource(<resource_uuid>);*
+  *var file = r.Result.FileName;*
 
 Almost each method of OhtApi class return namedtuple (with type oht_response) with such structure:
 
