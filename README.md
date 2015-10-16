@@ -35,11 +35,12 @@ Almost each method of OhtApi class return with such structure:
 
 **errors** - list of errors
 
+##See FormExamples.cs for code example##
+
 For more details see doc comments for each method.
 
 
 Where to go from here
 
 Use doc comments in OhtApi class
-See FormExamples.cs for code example
 [Visit official website API Developers Guide] Visit official website `API Developers Guide (https://www.onehourtranslation.com/translation/api-documentation-v2/general-instructions)
