@@ -16,7 +16,7 @@ Request your API Keys [here](http://www.onehourtranslation.com/profile/apiKeys).
 #### Configuration ####
 The API Library must be configured before calling any API method:
 
-  #var _api = new Ohtapi(PublicKey, SecretKey, UseSandbox);#
+  *var _api = new Ohtapi(PublicKey, SecretKey, UseSandbox);*
 
 #### Running Methods ####
 
