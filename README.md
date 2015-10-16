@@ -1,6 +1,10 @@
 # API-Library-CSharp
 One Hour Translation™ provides translation, proofreading and transcription services worldwide. The following API library allows customers to submit and monitor jobs automatically and remotely.
 
+`More at website <https://www.onehourtranslation.com/translation/about-us>`_ 
+
+Starters' Guide
+---------------
 First of all, you must to obtain private and public keys:
 
 Register as a customer on One Hour Translation
