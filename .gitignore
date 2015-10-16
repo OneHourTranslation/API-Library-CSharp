@@ -1,0 +1,9 @@
+*.suo
+bin/
+obj/
+.hg/
+.hgignore
+*.exe
+*.user
+*.ini
+
