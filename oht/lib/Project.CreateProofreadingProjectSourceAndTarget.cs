@@ -8,12 +8,12 @@ namespace oht.lib
     public interface ICreateProofreadingProjectSourceAndTargetProvider
     {
         string Get(string url, WebProxy proxy, string publicKey, string secretKey, string sourceLanguage
-            , string targetLanguage, string sources, string translations, string wordcount = "", string notes = "", string callbackUrl = "", string name = "", string[] custom = null);
+			, string targetLanguage, string sources, string translations, StringExpertiseType expertise = StringExpertiseType.None, string wordcount = "", string notes = "", string callbackUrl = "", string name = "", string referenceResources = "", string[] custom = null);
     }
     public class CreateProofreadingProjectSourceAndTargetProvider : ICreateProofreadingProjectSourceAndTargetProvider
     {
         public string Get(string url, WebProxy proxy, string publicKey, string secretKey, string sourceLanguage
-            , string targetLanguage, string sources, string translations, string wordcount = "", string notes = "", string callbackUrl = "", string name = "", string[] custom = null)
+			, string targetLanguage, string sources, string translations, StringExpertiseType expertise = StringExpertiseType.None, string wordcount = "", string notes = "", string callbackUrl = "", string name = "", string referenceResources = "", string[] custom = null)
         {
             using (var client = new WebClient())
             {
@@ -23,6 +23,15 @@ namespace oht.lib
                 var web = url + String.Format("/projects/proof-translated?public_key={0}&secret_key={1}&source_language={2}&target_language={3}&sources={4}&translations={5}&wordcount={6}&callback_url={7}&name={8}"
                     , publicKey, secretKey, sourceLanguage, targetLanguage, sources, translations, wordcount, callbackUrl, name);
                 var values = new System.Collections.Specialized.NameValueCollection { { "notes", notes } };
+
+				if (expertise != StringExpertiseType.None) {
+					values.Add("expertise", expertise.GetStringValue());
+				}
+
+				if (!referenceResources.Equals("")) {
+					values.Add("reference_resources", referenceResources);
+				}
+
                 if (custom != null)
                 {
                     for (var i = 0; i < custom.Length; i++)
@@ -46,21 +55,23 @@ namespace oht.lib
         /// <param name="targetLanguage">See Language Codes</param>
         /// <param name="sources">Comma separated list of Resource UUIDs</param>
         /// <param name="translations">Comma separated list of Resource UUIDs</param>
+		/// <param name="expertise">[Optional] See Expertise Codes</param>
         /// <param name="wordcount">[Optional] If empty use automatic counting</param>
         /// <param name="notes">[Optional] Text note that will be shown to translator regarding the newly project</param>
         /// <param name="callbackUrl">[Optional] See Callbacks section</param>
         /// <param name="name">[Optional] Name your project. If empty, your project will be named automatically.</param>
-        /// <param name="custom">[Optional]</param>
+		/// <param name="referenceResources">[Optional]Comma separated list of reference resource UUIDs</param>
+		/// <param name="custom">[Optional]String array of all custom fields (maximum 9 custom fields)</param>
         /// <returns></returns>
         public CreateProofreadingProjectSourceAndTargetResult CreateProofreadingProjectSourceAndTarget(string sourceLanguage
-            , string targetLanguage, string sources, string translations, string wordcount = "", string notes = "", string callbackUrl = "", string name = "", string[] custom = null)
+			, string targetLanguage, string sources, string translations, StringExpertiseType expertise = StringExpertiseType.None, string wordcount = "", string notes = "", string callbackUrl = "", string name = "", string referenceResources = "", string[] custom = null)
         {
             var r = new CreateProofreadingProjectSourceAndTargetResult();
             try
             {
                 if (CreateProofreadingProjectSourceAndTargetProvider == null)
                     CreateProofreadingProjectSourceAndTargetProvider = new CreateProofreadingProjectSourceAndTargetProvider();
-                var json = CreateProofreadingProjectSourceAndTargetProvider.Get(Url, _proxy, KeyPublic, KeySecret, sourceLanguage,targetLanguage , sources, translations, wordcount, notes, callbackUrl, name);
+				var json = CreateProofreadingProjectSourceAndTargetProvider.Get(Url, _proxy, KeyPublic, KeySecret, sourceLanguage, targetLanguage, sources, translations, expertise, wordcount, notes, callbackUrl, name, referenceResources, custom);
                 r = JsonConvert.DeserializeObject<CreateProofreadingProjectSourceAndTargetResult>(json.Replace("\"results\":[", "\"resultsArray\":["));
             }
             catch (Exception err)

@@ -7,8 +7,9 @@ namespace oht.lib
     public enum StringCurrency
     {
         [StringValue("")] None,
-        [StringValue("USD")] Usd,
-        [StringValue("EUR")] Eur
+        [StringValue("USD")] USD,
+        [StringValue("EUR")] EUR,
+		[StringValue("GBP")] GBP
     }
 
     public enum StringAvailability
@@ -26,8 +27,45 @@ namespace oht.lib
         [StringValue("Expert Translation")] ExpertTranslation,
         [StringValue("Proofreading")] Proofreading,
         [StringValue("Transcription")] Transcription,
-        [StringValue("Translation + Proofreading")] TranslationProofreading
+		[StringValue("Translation+Proofreading")] TranslationProofreading
     }
+
+	public enum StringRatingCategoriesType
+	{
+		[StringValue("service_was_on_time")] ServiceWasOnTime,
+		[StringValue("service_support_helpful")] ServiceSupportHelpful,
+		[StringValue("service_good_quality")] ServiceGoodQuality,
+		[StringValue("service_trans_responded")] ServiceTransResponded,
+		[StringValue("service_would_recommend")] ServiceWouldRecommend,
+		[StringValue("trans_is_good")] TransIsGood,
+		[StringValue("trans_bad_formatting")] TransBadFormatting,
+		[StringValue("trans_misunderstood_source")] TransMisunderstoodSource,
+		[StringValue("trans_spell_tps_grmr_mistakes")] TransSpellTpsGrmrMistakes,
+		[StringValue("trans_text_miss")] TransTextMiss,
+		[StringValue("trans_not_followed_instrctns")] TransNotFollowedInstrctns,
+		[StringValue("trans_inconsistent")] TransInconsistent,
+		[StringValue("trans_bad_written")] TransBadWritten
+	}
+
+	public enum StringExpertiseType
+	{
+		[StringValue("")] None,
+		[StringValue("automotive-aerospace")] Automotive_Aerospace,
+		[StringValue("business-finance")] Business_Forex_Finance,
+		[StringValue("software-it")] Software_IT,
+		[StringValue("legal-certificate")] Legal,
+		[StringValue("marketing-consumer-media")] Marketing_Consumer_Media,
+		[StringValue("cv")] CV,
+		[StringValue("medical")] Medical,
+		[StringValue("patents")] Patents,
+		[StringValue("scientific-academic")] Scientific_Academic,
+		[StringValue("technical-engineering")] Technical_Engineering,
+		[StringValue("gaming-video-games")] Gaming_Video_Games,
+		[StringValue("ad-words-banners")] Ad_Words_Banners,
+		[StringValue("mobile-applications")] Mobile_Applications,
+		[StringValue("tourism")] Tourism,
+		[StringValue("certificates-translation")] Certificates_Translation
+	}
 
     public enum StringProjectStatusCode
     {
@@ -65,9 +103,9 @@ namespace oht.lib
     {
         [StringValue("")]
         None,
-        [StringValue("Customer")]
+        [StringValue("customer")]
         Customer,
-        [StringValue("Service")]
+        [StringValue("service")]
         Service
     }
 

@@ -9,20 +9,20 @@ namespace oht.lib
     public interface ICreateTranslationProjectProvider
     {
         string Get(string url, WebProxy proxy, string publicKey, string secretKey, string sourceLanguage, string targetLanguage
-            , string sources, string expertise, string wordcount = "", string notes = "", string callbackUrl = "", string name = "");
+			, string sources, StringExpertiseType expertise = StringExpertiseType.None, string wordcount = "", string notes = "", string callbackUrl = "", string name = "", string referenceResources = "", string[] custom = null);
     }
     public class CreateTranslationProjectProvider : ICreateTranslationProjectProvider
     {
         public string Get(string url, WebProxy proxy, string publicKey, string secretKey, string sourceLanguage, string targetLanguage
-            , string sources, string expertise, string wordcount = "", string notes = "", string callbackUrl = "", string name = "")
+			, string sources, StringExpertiseType expertise = StringExpertiseType.None, string wordcount = "", string notes = "", string callbackUrl = "", string name = "", string referenceResources = "", string[] custom = null)
         {
             using (var client = new WebClient())
             {
                 if (proxy != null)
                     client.Proxy = proxy;
                 client.Encoding = Encoding.UTF8;
-                var web = url + String.Format("/projects/translation?public_key={0}&secret_key={1}&source_language={2}&target_language={3}&sources={4}&expertise={5}"
-                    , publicKey, secretKey, sourceLanguage, targetLanguage, sources, expertise);
+                var web = url + String.Format("/projects/translation?public_key={0}&secret_key={1}&source_language={2}&target_language={3}&sources={4}"
+					, publicKey, secretKey, sourceLanguage, targetLanguage, sources);
 
                 var values = new System.Collections.Specialized.NameValueCollection
                     {
@@ -31,6 +31,19 @@ namespace oht.lib
                         {"callback_url", callbackUrl},
                         {"name", name}
                     };
+				if (expertise != StringExpertiseType.None) {
+					values.Add("expertise", expertise.GetStringValue());
+				}
+					
+				if (!referenceResources.Equals("")) {
+					values.Add("reference_resources", referenceResources);
+				}
+
+				if (custom != null) {
+					for (int i = 0; i < custom.Length; i++) {
+						values.Add("custom" + i, custom[i]);
+					}
+				}
 
                 return Encoding.Default.GetString(client.UploadValues(web, "POST", values));
             }
@@ -50,16 +63,18 @@ namespace oht.lib
         /// <param name="notes">[Optional] Text note that will be shown to translator regarding the newly project</param>
         /// <param name="callbackUrl">[Optional] See Callbacks section</param>
         /// <param name="name">[Optional] Name your project. If empty, your project will be named automatically.</param>
+		/// <param name="referenceResources">[Optional]Comma separated list of reference resource UUIDs</param>
+		/// <param name="custom">[Optional]String array of all custom fields (maximum 9 custom fields)</param>
         /// <returns></returns>
         public CreateTranslationProjectResult CreateTranslationProject(string sourceLanguage, string targetLanguage
-            , string sources, string expertise, string wordcount = "", string notes = "", string callbackUrl = "", string name = "")
+			, string sources, StringExpertiseType expertise = StringExpertiseType.None, string wordcount = "", string notes = "", string callbackUrl = "", string name = "", string referenceResources = "", string[] custom = null)
         {
             var r = new CreateTranslationProjectResult();
             try
             {
                 if (CreateTranslationProjectProvider == null)
                     CreateTranslationProjectProvider = new CreateTranslationProjectProvider();
-                var json = CreateTranslationProjectProvider.Get(Url, _proxy, KeyPublic, KeySecret, sourceLanguage, targetLanguage, sources, expertise, wordcount, notes, callbackUrl, name);
+				var json = CreateTranslationProjectProvider.Get(Url, _proxy, KeyPublic, KeySecret, sourceLanguage, targetLanguage, sources, expertise, wordcount, notes, callbackUrl, name, referenceResources, custom);
                 r = JsonConvert.DeserializeObject<CreateTranslationProjectResult>(json.Replace("\"results\":[", "\"resultsArray\":["));
             }
             catch (Exception err)

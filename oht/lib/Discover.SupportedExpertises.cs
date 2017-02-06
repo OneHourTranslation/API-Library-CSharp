@@ -79,6 +79,8 @@ namespace oht.lib
         /// </summary>
         [JsonProperty(PropertyName = "code")]
         public string Code;
+		[JsonProperty(PropertyName = "expertise_id")]
+		public string Id;
     }
 
 }

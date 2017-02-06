@@ -44,7 +44,7 @@ namespace oht.lib
             {
                 if (GetProjectDetailsProvider == null)
                     GetProjectDetailsProvider = new GetProjectDetailsProvider();
-                var json = GetProjectDetailsProvider.Get(Url, _proxy, KeyPublic, KeySecret, projectId).Replace("\"results\":[", "\"resultsArray\":[");
+				var json = GetProjectDetailsProvider.Get(Url, _proxy, KeyPublic, KeySecret, projectId).Replace("\"results\":[", "\"resultsArray\":[");
                 var n = json.IndexOf("\"resource_binding\":{\"", StringComparison.Ordinal);
 
                 if (n > -1)
@@ -63,6 +63,7 @@ namespace oht.lib
                         });
                 }
                 r = JsonConvert.DeserializeObject<GetProjectDetailsResult>(json);
+
                 if (r.Status.Code == 0)
                 {
                     r.Result.ResourceBinding = resourceBinding;
@@ -109,7 +110,7 @@ namespace oht.lib
         /// Translation | Expert Translation | Proofreading | Transcription | Translation + Proofreading |
         /// </summary>
         [JsonProperty(PropertyName = "project_type")]
-        public StringProjectType ProjectType;
+		public string ProjectType;
         [JsonProperty(PropertyName = "project_status")]
         public string ProjectStatus;
         /// <summary>
@@ -148,9 +149,15 @@ namespace oht.lib
         [JsonProperty(PropertyName = "length")]
         public int Length;
         [JsonProperty(PropertyName = "custom")]
-        public string Custom;
+		public GetProjectDetailsCustom Custom;
         [JsonProperty(PropertyName = "resource_binding")]
         public List<string[]> ResourceBinding;
+		[JsonProperty(PropertyName = "linguist_uuid")]
+		public string LinguistUuid;
+		[JsonProperty(PropertyName = "tags")]
+		public string[] Tags;
+		[JsonProperty(PropertyName = "following_project_id")]
+		public string FollowingProject;
     }
 
     public struct GetProjectDetailsResources
@@ -169,13 +176,16 @@ namespace oht.lib
         /// List of proofreading resource UUIDs related to the requested project
         /// </summary>
         [JsonProperty(PropertyName = "proofs")]
-        public string Proofs;
+        public string[] Proofs;
         /// <summary>
         /// List of transcription resource UUIDs related to the requested project
         /// </summary>
         [JsonProperty(PropertyName = "transcriptions")]
-        public string Transcriptions;
-
+        public string[] Transcriptions;
+		[JsonProperty(PropertyName = "resultsArray")]
+		public string[] TranslationResults;
+		[JsonProperty(PropertyName = "reference")]
+		public string[] Reference;
     }
 
     public struct GetProjectDetailsCustom

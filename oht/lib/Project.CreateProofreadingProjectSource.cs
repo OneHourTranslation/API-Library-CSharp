@@ -8,12 +8,12 @@ namespace oht.lib
     public interface ICreateProofreadingProjectSourceProvider
     {
         string Get(string url, WebProxy proxy, string publicKey, string secretKey, string sourceLanguage, string sources
-            , string wordcount = "", string notes = "", string expertise = "", string callbackUrl = "", string name = "", string[] custom = null);
+			, string wordcount = "", string notes = "", StringExpertiseType expertise = StringExpertiseType.None, string callbackUrl = "", string name = "", string referenceResources = "", string[] custom = null);
     }
     public class CreateProofreadingProjectSourceProvider : ICreateProofreadingProjectSourceProvider
     {
         public string Get(string url, WebProxy proxy, string publicKey, string secretKey, string sourceLanguage, string sources
-            , string wordcount, string notes, string expertise, string callbackUrl, string name, string[] custom = null)
+			, string wordcount, string notes, StringExpertiseType expertise, string callbackUrl, string name, string referenceResources = "", string[] custom = null)
         {
             using (var client = new WebClient())
             {
@@ -26,10 +26,15 @@ namespace oht.lib
                     {"source_language", sourceLanguage }
                     ,{"sources", sources }
                     ,{"wordcount", wordcount }
-                    ,{"expertise", expertise }
+					,{"expertise", expertise.GetStringValue() }
                     ,{"callback_url", callbackUrl }
                     ,{ "notes", notes },{ "name", name }
                 };
+
+				if (!referenceResources.Equals("")) {
+					values.Add("reference_resources", referenceResources);
+				}
+
                 if (custom != null)
                 {
                     for (var i = 0; i < custom.Length; i++)
@@ -56,17 +61,18 @@ namespace oht.lib
         /// <param name="expertise">[Optional] See Expertise Codes</param>
         /// <param name="callbackUrl">[Optional] See Callbacks section</param>
         /// <param name="name">[Optional] Name your project. If empty, your project will be named automatically.</param>
-        /// <param name="custom">[Optional]</param>
+		/// <param name="referenceResources">[Optional]Comma separated list of reference resource UUIDs</param>
+		/// <param name="custom">[Optional]String array of all custom fields (maximum 9 custom fields)</param>
         /// <returns></returns>
         public CreateProofreadingProjectSourceResult CreateProofreadingProjectSource(string sourceLanguage
-            , string sources, string wordcount, string notes, string expertise, string callbackUrl, string name, string[] custom = null)
+			, string sources, string wordcount = "", string notes = "", StringExpertiseType expertise = StringExpertiseType.None, string callbackUrl = "", string name = "", string referenceResources = "", string[] custom = null)
         {
             var r = new CreateProofreadingProjectSourceResult();
             try
             {
                 if (CreateProofreadingProjectSourceProvider == null)
                     CreateProofreadingProjectSourceProvider = new CreateProofreadingProjectSourceProvider();
-                var json = CreateProofreadingProjectSourceProvider.Get(Url, _proxy, KeyPublic, KeySecret, sourceLanguage, sources, wordcount, notes, expertise, callbackUrl, name);
+				var json = CreateProofreadingProjectSourceProvider.Get(Url, _proxy, KeyPublic, KeySecret, sourceLanguage, sources, wordcount, notes, expertise, callbackUrl, name, referenceResources, custom);
                 r = JsonConvert.DeserializeObject<CreateProofreadingProjectSourceResult>(json.Replace("\"results\":[", "\"resultsArray\":["));
             }
             catch (Exception err)
