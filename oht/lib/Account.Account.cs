@@ -88,6 +88,16 @@ namespace oht.lib
         /// </summary>
         [JsonProperty(PropertyName = "credits")]
         public decimal Credits;
+		/// <summary>
+		/// User Role
+		/// </summary>
+		[JsonProperty(PropertyName = "role")]
+		public string Role;
+		/// <summary>
+		/// Customer uuid
+		/// </summary>
+		[JsonProperty(PropertyName = "uuid")]
+		public string Uuid;
     }
 
 }
