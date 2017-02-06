@@ -12,7 +12,7 @@ namespace oht.lib
             KeyPublic = publicKey;
             KeySecret = secretKey;
             Url = usingSandbox
-                ? "https://sandbox4.onehourtranslation.com/api/2" : "https://www.onehourtranslation.com/api/2";
+                ? "https://sandbox.onehourtranslation.com/api/2" : "https://www.onehourtranslation.com/api/2";
         }
 
         string Url { get; set; }
